@@ -1,0 +1,51 @@
+generator client {
+    provider = "prisma-client-js"
+}
+
+datasource db {
+    provider = "sqlserver"
+    url      = env("DATABASE_URL")
+}
+
+model auditorium_types {
+    auditorium_type     String        @id(map: "PK__auditori__824BA0545D71EF26") @db.NVarChar(255)
+    auditorium_typename String        @db.NVarChar(255)
+    auditoriums         auditoriums[]
+}
+
+model auditoriums {
+    auditorium          String           @id(map: "PK__auditori__9ADEC563E7762B67") @db.NVarChar(255)
+    auditorium_name     String           @db.NVarChar(255)
+    auditorium_capacity Int
+    auditorium_type     String           @db.NVarChar(255)
+    auditorium_types    auditorium_types @relation(fields: [auditorium_type], references: [auditorium_type], onDelete: Cascade, onUpdate: NoAction, map: "FK__auditoriu__audit__398D8EEE")
+}
+
+model faculties {
+    faculty      String    @id(map: "PK__facultie__2D4AEC399F2338E8") @db.NVarChar(255)
+    faculty_name String    @db.NVarChar(255)
+    pulpits      pulpits[]
+}
+
+model pulpits {
+    pulpit      String     @id(map: "PK__pulpits__EC6DB4A533A68D36") @db.NVarChar(255)
+    pulpit_name String     @db.NVarChar(255)
+    faculty     String     @db.NVarChar(255)
+    faculties   faculties  @relation(fields: [faculty], references: [faculty], onDelete: Cascade, onUpdate: NoAction, map: "FK__pulpits__faculty__3E52440B")
+    subjects    subjects[]
+    teachers    teachers[]
+}
+
+model subjects {
+    subject      String  @id(map: "PK__subjects__CED0396784199BBD") @db.NVarChar(255)
+    subject_name String  @db.NVarChar(255)
+    pulpit       String  @db.NVarChar(255)
+    pulpits      pulpits @relation(fields: [pulpit], references: [pulpit], onDelete: Cascade, onUpdate: NoAction, map: "FK__subjects__pulpit__412EB0B6")
+}
+
+model teachers {
+    teacher      String  @id(map: "PK__teachers__933F87C478C98AAC") @db.NVarChar(255)
+    teacher_name String  @db.NVarChar(255)
+    pulpit       String  @db.NVarChar(255)
+    pulpits      pulpits @relation(fields: [pulpit], references: [pulpit], onDelete: Cascade, onUpdate: NoAction, map: "FK__teachers__pulpit__440B1D61")
+}

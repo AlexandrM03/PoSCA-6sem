@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Pulpits with Teachers Count</title>
+</head>
+<body>
+  <h1>Pulpits with Teachers Count</h1>
+  <table>
+    <thead>
+      <tr>
+        <th>Pulpit Name</th>
+        <th>Teacher Count</th>
+      </tr>
+    </thead>
+    <tbody id="pulpitsTableBody">
+    </tbody>
+  </table>
+  <div>
+    <button id="previousPageButton">&lt;</button>
+    <button id="nextPageButton">&gt;</button>
+  </div>
+  <script>
+    const pulpitsTableBody = document.getElementById('pulpitsTableBody');
+    const previousPageButton = document.getElementById('previousPageButton');
+    const nextPageButton = document.getElementById('nextPageButton');
+    let currentPage = 1;
+
+    function renderPulpitsTable(pulpits) {
+      let tableRows = '';
+      for (let i = 0; i < pulpits.length; i++) {
+        const pulpit = pulpits[i];
+        tableRows += `<tr>
+                        <td>${pulpit.pulpit_name}</td>
+                        <td>${pulpit.teacher_count}</td>
+                      </tr>`;
+      }
+      pulpitsTableBody.innerHTML = tableRows;
+    }
+
+	async function updateButtons() {
+		previousPageButton.disabled = (currentPage === 1);
+	}
+
+    async function fetchPulpits(page) {
+      try {
+        const response = await fetch(`http://localhost:3000/api/pulpits/pulpitsWithTeachersCount/${page}`);
+        const data = await response.json();
+        currentPage = page;
+        renderPulpitsTable(data);
+		updateButtons();
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+    previousPageButton.addEventListener('click', () => {
+      fetchPulpits(currentPage - 1);
+    });
+
+    nextPageButton.addEventListener('click', () => {
+      fetchPulpits(currentPage + 1);
+    });
+
+    fetchPulpits(currentPage);
+  </script>
+</body>
+</html>
