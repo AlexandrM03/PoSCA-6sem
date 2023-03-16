@@ -54,9 +54,16 @@ export const deleteAuditorium = async (auditorium: string) => {
 	}
 }
 
-export const getAuditoriumsSameCount = async (auditorium_capacity: number) => {
+export const getAuditoriumsSameCount = async () => {
 	try {
+		const auditoriums = prisma.auditoriums.groupBy({
+			by: ['auditorium_capacity', 'auditorium_type'],
+			_count: {
+				_all: true,
+			}
+		});
 
+		return auditoriums;
 	} catch (err: any) {
 		throw new Error(`Failed to get auditoriums: ${err.message}`);
 	}

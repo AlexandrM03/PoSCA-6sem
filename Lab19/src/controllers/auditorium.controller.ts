@@ -4,7 +4,8 @@ import {
 	createAuditorium,
 	updateAuditorium,
 	deleteAuditorium,
-	updateAndRollbackAuditoriumCapacity
+	updateAndRollbackAuditoriumCapacity,
+	getAuditoriumsSameCount
 } from '../services/auditorium.service.js';
 
 const router = Router();
@@ -38,6 +39,16 @@ router.delete('/:auditorium', async (req: Request, res: Response) => {
 	try {
 		const auditorium = await deleteAuditorium(req.params.auditorium);
 		res.status(200).json(auditorium);
+	} catch (err: any) {
+		console.error(err.message);
+		res.status(500).json({ message: err.message });
+	}
+});
+
+router.get('/getAuditoriumsSameCount', async (req: Request, res: Response) => {
+	try {
+		const auditoriumsCount = await getAuditoriumsSameCount();
+		res.status(200).json(auditoriumsCount);
 	} catch (err: any) {
 		console.error(err.message);
 		res.status(500).json({ message: err.message });
