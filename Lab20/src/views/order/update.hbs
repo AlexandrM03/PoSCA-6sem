@@ -1,0 +1,17 @@
+<h1>Update order</h1>
+
+<form action="/order/?_method=PUT" method="post">
+	<label for="id">Id:</label>
+	<input type="number" name="id" required>
+	<br>
+
+	<label for="start_address">Start address:</label>
+	<input type="text" name="start_address" required>
+	<br>
+
+	<label for="end_address">End address:</label>
+	<input type="text" name="end_address" required>
+	<br>
+
+	<button type="submit">Submit</button>
+</form>

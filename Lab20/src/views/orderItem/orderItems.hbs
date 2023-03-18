@@ -1,0 +1,66 @@
+<h1>Order items</h1>
+
+<input type="number" name="orderItem">
+<button onclick="findOrderItem()">Search</button>
+<br>
+<input type="number" name="deleteOrderItem">
+<button onclick="deleteOrderItem()">Delete</button>
+<br>
+<h3 id="found"></h3>
+
+<table>
+	<tr>
+		<th>Id</th>
+		<th>Order id</th>
+		<th>Name</th>
+		<th>Weight</th>
+		<th>Volume</th>
+	</tr>
+	{{#each orderItems}}
+	<tr>
+		<td>{{id}}</td>
+		<td>{{order_id}}</td>
+		<td>{{name}}</td>
+		<td>{{weight}}</td>
+		<td>{{volume}}</td>
+	</tr>
+	{{/each}}
+</table>
+
+<script>
+	function findOrderItem() {
+		const orderItem = document.querySelector('input[name="orderItem"]').value;
+		const url = `/orderItem/${orderItem}`;
+
+		fetch(url)
+		.then(res => res.json())
+		.then(data => {
+			const found = document.querySelector('#found');
+			if (!data) {
+				found.innerHTML = 'Order item not found';
+			} else {
+				found.innerHTML = `Order item found: ${data.id} | ${data.order_id} | ${data.name} | ${data.weight} | ${data.volume}`;
+			}
+		})
+		.catch(err => console.log(err));
+	}
+
+	function deleteOrderItem() {
+		const orderItem = document.querySelector('input[name="deleteOrderItem"]').value;
+		const url = `/orderItem/${orderItem}`;
+
+		fetch(url, {
+			method: 'DELETE'
+		})
+		.then(res => res.json())
+		.then(data => {
+			const found = document.querySelector('#found');
+			if (data.error) {
+				found.innerHTML = 'Order item not found';
+			} else {
+				found.innerHTML = `Order item deleted: ${data.id} | ${data.order_id} | ${data.name} | ${data.weight} | ${data.volume}`;
+			}
+		})
+		.catch(err => console.log(err));
+	}
+</script>

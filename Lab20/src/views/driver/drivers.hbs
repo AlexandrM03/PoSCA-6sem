@@ -1,0 +1,64 @@
+<h1>Drivers</h1>
+
+<input type="number" name="driver"/>
+<button onclick="findDriver()">Search</button>
+<br>
+<h3 id="found"></h3>
+
+<input type="text" name="deleteDriver">
+<button onclick="deleteDriver()">Delete</button>
+<br>
+<h3 id="deleted"></h3>
+
+<table>
+	<tr>
+		<th>Driver ID</th>
+		<th>First Name</th>
+		<th>Last Name</th>
+		<th>Telephone</th>
+	</tr>
+	{{#each drivers}}
+	<tr>
+		<td>{{id}}</td>
+		<td>{{first_name}}</td>
+		<td>{{last_name}}</td>
+		<td>{{telephone}}</td>
+	</tr>
+	{{/each}}
+</table>
+
+<script>
+	function findDriver() {
+		const driver = document.querySelector('input[name="driver"]').value;
+		const url = `/driver/${driver}`;
+		fetch(url)
+			.then(res => res.json())
+			.then(data => {
+				const found = document.querySelector('#found');
+				if (!data) {
+					found.innerHTML = 'Driver not found';
+				} else {
+					found.innerHTML = `Driver found: ${data.driver_id} | ${data.first_name} | ${data.last_name} | ${data.telephone}`;
+				}
+			})
+			.catch(err => console.log(err));
+	}
+
+	function deleteDriver() {
+		const driver = document.querySelector('input[name="deleteDriver"]').value;
+		const url = `/driver/${driver}`;
+		fetch(url, {
+			method: 'DELETE'
+		})
+			.then(res => res.json())
+			.then(data => {
+				const deleted = document.querySelector('#deleted');
+				if (data.error) {
+					deleted.innerHTML = 'Driver not found';
+				} else {
+					deleted.innerHTML = `Driver deleted: ${data.driver_id} | ${data.first_name} | ${data.last_name} | ${data.telephone}`;
+				}
+			})
+			.catch(err => console.log(err));
+	}
+</script>

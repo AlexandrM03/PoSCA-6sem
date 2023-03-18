@@ -1,0 +1,53 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlserver"
+  url      = env("DATABASE_URL")
+}
+
+model order_items {
+  id       Int    @id(map: "order_items_pk") @default(autoincrement())
+  order_id Int
+  name     String @db.VarChar(30)
+  weight   Int
+  volume   Int
+  orders   orders @relation(fields: [order_id], references: [id], onUpdate: NoAction, map: "order_items_order_id_fk")
+}
+
+model orders {
+  id                Int           @id(map: "orders_pk") @default(autoincrement())
+  customer_username String        @db.VarChar(30)
+  driver_id         Int?
+  start_address     String        @db.VarChar(30)
+  end_address       String        @db.VarChar(30)
+  order_items       order_items[]
+  users             users         @relation(fields: [customer_username], references: [username], onUpdate: NoAction, map: "orders_customer_username_fk")
+  drivers           drivers?      @relation(fields: [driver_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "orders_driver_id_fk")
+}
+
+model users {
+  username      String      @id(map: "users_pk") @db.VarChar(30)
+  password_hash String      @db.VarChar(300)
+  first_name    String      @db.VarChar(30)
+  last_name     String      @db.VarChar(30)
+  telephone     String      @db.VarChar(30)
+  user_role_id  Int?
+  orders        orders[]
+  user_roles    user_roles? @relation(fields: [user_role_id], references: [user_role_id], onDelete: NoAction, onUpdate: NoAction, map: "users_user_role_id_fk")
+}
+
+model drivers {
+  id         Int      @id(map: "drivers_pk") @default(autoincrement())
+  first_name String   @db.VarChar(30)
+  last_name  String   @db.VarChar(30)
+  telephone  String   @db.VarChar(30)
+  orders     orders[]
+}
+
+model user_roles {
+  user_role_id Int     @id(map: "user_roles_pk") @default(autoincrement())
+  user_role    String  @db.VarChar(30)
+  users        users[]
+}
