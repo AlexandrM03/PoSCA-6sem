@@ -1,0 +1,18 @@
+<div class="contacts">
+	{{#each contacts}}
+		{{>contact}}
+	{{/each}}
+</div>
+<br>
+<form action="/add" method="post" class="addForm">
+	<input type="text" name="contact" placeholder="Фамилия, имя, отчество		Телефон">
+	<input type="submit" class="add-btn" value="Добавить">
+</form>
+<form action="/" method="get">
+	<input type="submit" style="deny-btn" value="Отказаться">
+</form>
+<script>
+	document.querySelectorAll('#contact-btn').forEach(btn => {
+		btn.disabled = true;
+	});
+</script>
