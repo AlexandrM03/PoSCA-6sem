@@ -13,9 +13,6 @@
 	<input type="hidden" name="contact" value="{{name}} {{telephone}}">
 	<input type="submit" id="delete" class="delete-btn" value="Удалить">
 </form>
-<form action="/" method="get">
-	<input type="submit" style="deny-btn" value="Отказаться">
-</form>
 <script>
 	document.getElementById('input').oninput = () => {
 		document.getElementById('delete').disabled = true;

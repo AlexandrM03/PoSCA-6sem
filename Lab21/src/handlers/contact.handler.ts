@@ -22,7 +22,7 @@ export class ContactHandler {
 
 	private async getAdd(req: Request, res: Response) {
 		const contacts = await this.readContacts();
-		res.render('add', { contacts });
+		res.render('add', { contacts, deny: true });
 	}
 
 	private async postAdd(req: Request, res: Response) {
@@ -43,7 +43,7 @@ export class ContactHandler {
 
 	private async getUpdate(req: Request, res: Response) {
 		const contacts = await this.readContacts();
-		res.render('update', { contacts, name: req.query.name, telephone: req.query.telephone });
+		res.render('update', { contacts, name: req.query.name, telephone: req.query.telephone, deny: true });
 	}
 
 	private async postUpdate(req: Request, res: Response) {
