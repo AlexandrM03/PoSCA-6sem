@@ -27,6 +27,7 @@ router.put('/telephone', async (req: Request, res: Response) => {
 
 router.get('/telephone', async (req: Request, res: Response) => {
 	res.render('user/telephone', { title: 'Update Telephone' });
+	res.render('user/telephone', { title: 'Update Telephone' });
 });
 
 router.get('/:username', async (req: Request, res: Response) => {
