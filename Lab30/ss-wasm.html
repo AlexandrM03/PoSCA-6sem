@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Server-Side</title>
+  </head>
+  <body>
+    <h1>Server-Side WASM Execution</h1>
+    <p>sum(5, 6) = <span id="rsum"></span></p>
+    <p>mul(5, 6) = <span id="rmul"></span></p>
+    <p>sub(5, 6) = <span id="rsub"></span></p>
+
+    <script>
+      (async () => {
+        const wasmCode = await fetch("./functions.wasm");
+        const { instance } = await WebAssembly.instantiateStreaming(wasmCode);
+        const wasm = instance.exports;
+        rsum.textContent = wasm.sum(5, 6);
+        rmul.textContent = wasm.mul(5, 6);
+        rsub.textContent = wasm.sub(5, 6);
+      })();
+    </script>
+  </body>
+</html>
